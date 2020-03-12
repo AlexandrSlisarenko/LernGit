@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import ru.cinimex.aslisarenko.SpringInActiv.data.Ingredient;
 import ru.cinimex.aslisarenko.SpringInActiv.data.Taco;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Arrays;
@@ -39,13 +41,16 @@ public class jdbcTacoRepository implements TacoRepository{
 
     @Override
     public Taco findTaco(Long id) {
-        return jdbc.query("select id, createdAt, name from Taco",
-                this::mapRowToTaco);
+        return jdbc.queryForObject(
+                "select id, name, createdAt from Taco where id=?",
+                this::mapRowToTaco, id);
     }
 
     @Override
     public Iterable<Taco> findAll() {
-        return null;
+        return jdbc.query("select id, name, createdAt from Taco",
+                this::mapRowToTaco);
+
     }
 
     private long saveTacoInfo(Taco taco){
@@ -61,5 +66,12 @@ public class jdbcTacoRepository implements TacoRepository{
 
     private void saveIngradientToTaco(Ingredient ingredient, long tacoId){
         this.jdbc.update("insert into Taco_Ingredients (taco, ingredient) value(?, ?)", tacoId, ingredient.getId());
+    }
+
+    private Taco mapRowToTaco(ResultSet rs, int rowNum) throws SQLException {
+        return new Taco(
+                rs.getLong("id"),
+                rs.getDate("createdAt"),
+                rs.getString("name"));
     }
 }

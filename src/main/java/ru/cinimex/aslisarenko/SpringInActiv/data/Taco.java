@@ -13,7 +13,7 @@ import java.util.List;
 public class Taco {
 
     @NotNull
-    private Long id;
+    private long id;
 
     @NotNull
     private Date createdAt;
@@ -23,6 +23,12 @@ public class Taco {
     private String name;
 
     @Size(min = 1, message = "You must choose at least 1 ingredient")
-    private List<String> ingredients;
+    private List<Ingredient> ingredients;
+
+    public Taco(Long id, Date dateCreate, String name){
+        this.id = id;
+        this.name = name;
+        this.createdAt = dateCreate;
+    }
 
 }
