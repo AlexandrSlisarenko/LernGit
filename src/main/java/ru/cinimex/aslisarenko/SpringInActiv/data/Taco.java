@@ -1,6 +1,7 @@
 package ru.cinimex.aslisarenko.SpringInActiv.data;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@RequiredArgsConstructor
 public class Taco {
 
     @NotNull
